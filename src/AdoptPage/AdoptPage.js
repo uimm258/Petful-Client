@@ -8,7 +8,7 @@ class AdoptPage extends Component {
     state = {
         people: [],
         newName: '',
-        peoplePos: null
+        peoplePos: 0
     }
 
     componentDidMount() {
@@ -22,11 +22,9 @@ class AdoptPage extends Component {
     addPerson = (e) => {
         e.preventDefault()
         const newName = e.target.name.value
-        console.log("newName: ", newName)
 
         ApiService.handleAddPerson(newName)
             .then(res => {
-                console.log(res)
                 this.setState({
                     people: [...this.state.people, res]
                 })
@@ -44,7 +42,9 @@ class AdoptPage extends Component {
 
     render() {
         const people = this.state.people
-        const peoplePos = people.length
+        const {peoplePos} = this.state
+        console.log("peoplePos: ", peoplePos)
+
         return (
             <div>
                 <h3>Waiting List</h3>
