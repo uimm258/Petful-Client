@@ -28,7 +28,7 @@ export default class Cats extends Component {
                 let { cats } = this.state
                 cats.shift()
                 this.setState({ cats: cats })
-                this.props.resetPeoplePosition()
+                this.props.deletePerson()
             })
     }
 
@@ -39,9 +39,8 @@ export default class Cats extends Component {
         const { catPos } = this.state
         const cat = cats[catPos]
 
-        let isAvailable = true;
-        if (catPos !== 0) isAvailable = false
-        if (this.props.peoplePos !== 0) isAvailable = false
+        let isAvailable = false;
+        if (this.props.peoplePos === 0) isAvailable = true
 
         return (
             <div>

@@ -7,19 +7,19 @@ import ApiService from '../service'
 class AdoptPage extends Component {
     state = {
         people: [],
-        newPeople: [],
+        newName: '',
         peoplePos: null
     }
-    
+
     componentDidMount() {
         ApiService.handleGetPeople()
             .then(people => this.setState({
-                    people: people,
-                }))
+                people: people,
+            }))
     }
 
 
-    handleAddPerson = (e) => {
+    addPerson = (e) => {
         e.preventDefault()
         const newName = e.target.name.value
         console.log("newName: ", newName)
@@ -28,46 +28,43 @@ class AdoptPage extends Component {
             .then(res => {
                 console.log(res)
                 this.setState({
-                people: [...this.state.people]
-            })
+                    people: [...this.state.people, res]
+                })
             })
 
-       
+
     }
 
-    resetPeoplePosition = () => {
+    deletePerson = () => {
         const people = this.state.people
         people.shift()
-        this.setState({ people, peoplePos:null })
+        this.setState({ people, peoplePos: null })
         ApiService.handleDeletePerson()
     }
 
     render() {
         const people = this.state.people
         const peoplePos = people.length
-        console.log("peoplePos: ", peoplePos)
-
-        console.log("render", people)
         return (
             <div>
                 <h3>Waiting List</h3>
 
                 <h4>Interest? Queue up now!</h4>
-                
-                    <form onSubmit={this.handleAddPerson}>
-                        <label>name: </label>
-                        <input type='text' placeholder='Random Random' required></input>
-                        <button type='submit'>Submit</button>
-                    </form>
-                
 
-                <People people={people} peoplePos={peoplePos}/>
+                <form onSubmit={this.addPerson}>
+                    <label>Enter Name Here: </label>
+                    <input id='name' type='text' placeholder='Random Random' required></input>
+                    <button type='submit'>Submit</button>
+                </form>
+
+
+                <People people={people} peoplePos={peoplePos} />
 
                 <h3>Pets Available for Adoption</h3>
-                <Dog peoplePos={peoplePos} resetPeoplePosition={this.resetPeoplePosition}/>
+                <Dog peoplePos={peoplePos} deletePerson={this.deletePerson } />
                 <br />{' '}
-                <Cat peoplePos={peoplePos} resetPeoplePosition={this.resetPeoplePosition}/>
-                
+                <Cat peoplePos={peoplePos} deletePerson={this.deletePerson } />
+
             </div>
         )
     }

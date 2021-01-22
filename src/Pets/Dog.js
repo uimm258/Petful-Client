@@ -28,7 +28,7 @@ export default class Dogs extends Component {
                 let { dogs } = this.state
                 dogs.shift()
                 this.setState({ dogs: dogs })
-                this.props.resetPeoplePosition()
+                this.props.deletePerson()
             })
     }
 
@@ -39,9 +39,8 @@ export default class Dogs extends Component {
         const { dogPos } = this.state
         const dog = dogs[dogPos]
 
-        let isAvailable = true;
-        if (dogPos !== 0) isAvailable = false
-        if (this.props.peoplePos !== 0) isAvailable = false
+        let isAvailable = false;
+        if (this.props.peoplePos === 0) isAvailable = true
 
         return (
             <div>
