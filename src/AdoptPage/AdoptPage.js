@@ -8,7 +8,8 @@ class AdoptPage extends Component {
     state = {
         people: [],
         newName: '',
-        peoplePos: 0
+        peoplePos: 0,
+        isAdoptable: false
     }
 
     componentDidMount() {
@@ -17,7 +18,6 @@ class AdoptPage extends Component {
                 people: people,
             }))
     }
-
 
     addPerson = (e) => {
         e.preventDefault()
@@ -29,8 +29,6 @@ class AdoptPage extends Component {
                     people: [...this.state.people, res]
                 })
             })
-
-
     }
 
     deletePerson = () => {
@@ -43,7 +41,6 @@ class AdoptPage extends Component {
     render() {
         const people = this.state.people
         const {peoplePos} = this.state
-        console.log("peoplePos: ", peoplePos)
 
         return (
             <div>
@@ -61,9 +58,9 @@ class AdoptPage extends Component {
                 <People people={people} peoplePos={peoplePos} />
 
                 <h3>Pets Available for Adoption</h3>
-                <Dog peoplePos={peoplePos} deletePerson={this.deletePerson } />
+                <Dog people={people} peoplePos={peoplePos} deletePerson={this.deletePerson } />
                 <br />{' '}
-                <Cat peoplePos={peoplePos} deletePerson={this.deletePerson } />
+                <Cat people={people} peoplePos={peoplePos} deletePerson={this.deletePerson } />
 
             </div>
         )

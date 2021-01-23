@@ -5,7 +5,8 @@ export default class Dogs extends Component {
     state = {
         dogs: [],
         dogPos: 0,
-        loading: true
+        loading: true,
+        adoptable: false
     }
 
     componentDidMount() {
@@ -24,7 +25,6 @@ export default class Dogs extends Component {
     adoptDog = () => {
         ApiService.handleDogAdopt()
             .then(res => {
-                window.alert('Congrats! You adopted a dog!')
                 let { dogs } = this.state
                 dogs.shift()
                 this.setState({ dogs: dogs })
@@ -32,15 +32,22 @@ export default class Dogs extends Component {
             })
     }
 
+    onClickEffect = () => {
+        this.adoptDog()
+        window.alert('Congrats! You adopted a dog!')
+    }
+
     render() {
         if (this.state.loading) return ('loading')
 
         const dogs = this.state.dogs
         const { dogPos } = this.state
+        const adoptable = this.state.adoptable
         const dog = dogs[dogPos]
 
-        let isAvailable = false;
-        if (this.props.peoplePos === 0) isAvailable = true
+        let isAvailable = false
+        if (dog.length <= 0 && adoptable === false) isAvailable = false
+        if (this.props.peoplePos === 0 && adoptable === true) isAvailable = true
 
         return (
             <div>
@@ -55,7 +62,7 @@ export default class Dogs extends Component {
                     <li>Story: {dog.story}</li>
                 </ul>
                 
-                <button onClick={this.adoptDog} disabled={isAvailable ? false : true}>Adopt</button><br />
+                <button onClick={this.onClickEffect} disabled={isAvailable ? false : true}>Adopt</button><br />
                 <button onClick={this.previousDog} hidden={!dogPos}>Previous Dog</button>
                 <button onClick={this.nextDog} hidden={dogPos === this.state.dogs.length - 1}>Next Dog</button>
             </div>
