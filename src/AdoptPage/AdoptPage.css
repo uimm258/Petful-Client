@@ -1,0 +1,57 @@
+.adoptpage h2, h4 {
+    text-align: center;
+    padding-top: 30px;
+}
+
+.adoptpage form {
+    text-align: center;
+}
+
+.adoptpage input{
+    border: 2px solid red;
+    border-radius: 4px;
+}
+
+.people {
+    padding-top: 50px;
+    text-align: center;
+}
+
+.people ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0px;
+}
+
+.new_name{
+    color:red
+}
+
+.pets h3 {
+    padding-top: 50px;
+    text-align: center;
+}
+
+.pets img {
+    width: 100%;
+}
+
+.pets button {
+    text-align: center;
+    font-size: 16px;
+    float: left;
+}
+
+.dogs {
+    width: 40%;
+    float: left;
+    box-sizing: border-box;
+    border: 1px solid lightgray;
+}
+
+.cats {
+    width: 40%;
+    float: right;
+    box-sizing: border-box;
+    border: 1px solid lightgray;
+}

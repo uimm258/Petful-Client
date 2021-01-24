@@ -7,10 +7,11 @@ export default class People extends React.Component {
 
         return (
             <div>
-                <h3>Waiting List</h3>
-                <ul>Next up: {people.map((para, i) => (
-                    <li key={i}>{para}</li>
-                ))}</ul>
+                <h3>Current Waiting List</h3>
+                <p><strong>Next Up: </strong></p>
+                <ul> 
+                    {people.map((para, i) => (<li className={`${this.props.newName===para ? "new_name": " "}`} key={i}>{para}</li>))}
+                </ul>
             </div>
         )
     }

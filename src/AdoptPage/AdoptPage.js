@@ -3,6 +3,7 @@ import Dog from '../Pets/Dog'
 import Cat from '../Pets/Cat'
 import People from '../People/People'
 import ApiService from '../service'
+import './AdoptPage.css'
 
 class AdoptPage extends Component {
     state = {
@@ -19,31 +20,40 @@ class AdoptPage extends Component {
             .then(people => this.setState({
                 people: people,
             }))
-        
+
         ApiService.handleGetCats()
             .then(cats => this.setState({
                 cats: cats,
-            }))    
+            }))
 
         ApiService.handleGetDogs()
             .then(dogs => this.setState({
                 dogs: dogs,
-            }))        
+            }))
 
         this.interval = setInterval(() => {
-            if(this.state.adoptions % 2){
-                ApiService.handleCatAdopt()
-                this.setState({cats: [...this.state.cats.splice(1)]})
-            } else {
-                ApiService.handleDogAdopt()
-                this.setState({dogs: [...this.state.dogs.splice(1)]})
+            if (this.state.people.length >= 5) {
+                if (this.state.adoptions % 2) {
+                    ApiService.handleCatAdopt()
+                    this.setState({
+                        cats: [...this.state.cats.splice(1)],
+                        people: [...this.state.people.splice(1)]
+                    })
+                } else {
+                    ApiService.handleDogAdopt()
+                    this.setState({
+                        dogs: [...this.state.dogs.splice(1)],
+                        people: [...this.state.people.splice(1)]
+
+                    })
+                }
             }
             ApiService.handleAddPerson(`Anonymous ${this.state.adoptions}`)
             this.setState({
-                people: [...this.state.people.splice(1), `Anonymous ${this.state.adoptions}`], 
-                adoptions: this.state.adoptions+1,
+                people: [...this.state.people, `Anonymous ${this.state.adoptions}`],
+                adoptions: this.state.adoptions + 1,
             })
-            if(this.state.newName === this.state.people[0]) {
+            if (this.state.newName === this.state.people[0]) {
                 this.setState({
                     isAdoptable: true
                 })
@@ -52,10 +62,10 @@ class AdoptPage extends Component {
     }
 
     componentDidUpdate() {
-        if(this.state.newName === this.state.people[0]) clearInterval(this.interval)
+        if (this.state.newName === this.state.people[0]) clearInterval(this.interval)
     }
-    
-    componentWillUnmount(){
+
+    componentWillUnmount() {
         clearInterval(this.interval);
     }
 
@@ -81,31 +91,37 @@ class AdoptPage extends Component {
 
     render() {
         const people = this.state.people
-
-        console.log("people: ", people)
-        console.log("isAdoptable: ", this.state.isAdoptable)
-        console.log("adoption: ", this.state.adoptions)
+        const newName = this.state.newName
 
         return (
-            <div>
-                <h3>Waiting List</h3>
+            <div className='adoptpage'>
+                <h2>Waiting List</h2>
 
                 <h4>Interest? Queue up now!</h4>
 
                 <form onSubmit={this.addPerson}>
-                    <label>Enter Name Here: </label>
+                    <label>Enter Your Name Here: </label>
                     <input id='name' type='text' placeholder='Random Random' required></input>
                     <button type='submit'>Submit</button>
                 </form>
 
 
-                <People people={people} />
+                <div className='people'>
+                    <People people={people} newName={newName}/>
+                </div>
+                
+                <div className='pets'>
+                    <h2>Pets Available for Adoption</h2>
 
-                <h3>Pets Available for Adoption</h3>
-                <Dog dogs={this.state.dogs} isAdoptable={this.state.isAdoptable} deletePerson={this.deletePerson } />
-                <br />{' '}
-                <Cat cats={this.state.cats} isAdoptable={this.state.isAdoptable} deletePerson={this.deletePerson } />
-
+                    <br />{' '}
+                    <div className='dogs'>
+                        <Dog dogs={this.state.dogs} isAdoptable={this.state.isAdoptable} deletePerson={this.deletePerson} />
+                    </div>
+                    
+                    <div className='cats'>
+                        <Cat cats={this.state.cats} isAdoptable={this.state.isAdoptable} deletePerson={this.deletePerson} />
+                    </div>
+                </div>
             </div>
         )
     }

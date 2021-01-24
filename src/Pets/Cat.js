@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ApiService from '../service'
-import {Link} from 'react-router-dom'
 
 export default class Cats extends Component {
     state = {
@@ -19,7 +18,7 @@ export default class Cats extends Component {
     adoptCat = () => {
         ApiService.handleCatAdopt()
             .then(res => {
-                let { cats } = this.state
+                let { cats } = this.props
                 cats.shift()
                 this.setState({ cats: cats })
                 this.props.deletePerson()
@@ -29,7 +28,7 @@ export default class Cats extends Component {
     onClickEffect = () => {
         this.adoptCat()
         window.alert('Congrats! You adopted a Cat!')
-        return <Link to="/"></Link> 
+        window.location.href = '/'
     }
 
     render() {
@@ -38,7 +37,6 @@ export default class Cats extends Component {
         let isAvailable = false
         let cat;
         
-        console.log(this.state.cats)
 
         if (cats.length > 0) {
             cat = cats[catPos]
@@ -53,17 +51,17 @@ export default class Cats extends Component {
                 <img src={cat.imageURL} alt="photograph" />
                 <h3>{cat.name}</h3>
                 <ul>
-                    <li>Name: {cat.name}</li>
-                    <li>Age: {cat.age}</li>
-                    <li>Breed: {cat.breed}</li>
-                    <li>Description: {cat.description}</li>
-                    <li>Gender: {cat.gender}</li>
-                    <li>Story: {cat.story}</li>
+                    <li><strong>Name: </strong>{cat.name}</li>
+                    <li><strong>Age: </strong>{cat.age}</li>
+                    <li><strong>Breed: </strong>{cat.breed}</li>
+                    <li><strong>Description: </strong>{cat.description}</li>
+                    <li><strong>Gender: </strong>{cat.gender}</li>
+                    <li><strong>Story: </strong>{cat.story}</li>
                 </ul>
 
-                <button onClick={this.onClickEffect} disabled={isAvailable ? false : true}>Adopt</button><br />
+                <button onClick={this.onClickEffect} disabled={isAvailable ? false : true}>Adopt</button>
                 <button onClick={this.previousCat} hidden={!catPos}>Previous Cat</button>
-                <button onClick={this.nextCat} hidden={catPos === this.state.cats.length - 1}>Next Cat</button>
+                <button onClick={this.nextCat} hidden={catPos === this.state.cats.length-1} disabled={catPos === cats.length-1}>Next Cat</button>
                 </div>}
             </>
         )

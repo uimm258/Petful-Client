@@ -1,0 +1,19 @@
+.dashboard img{
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;  
+}
+
+.adopt{
+    text-align: center;
+}
+
+.adopt a{
+    color: red
+}
+
+
+

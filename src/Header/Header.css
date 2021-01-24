@@ -1,0 +1,14 @@
+.header {
+    height: 100px;
+    text-align: center;
+    box-shadow:0 4px 8px rgba(0,0,0,.1);
+    padding-top: 10px;
+}
+
+.header h1 {
+    color: black
+}
+
+a{
+    text-decoration: none;
+}
