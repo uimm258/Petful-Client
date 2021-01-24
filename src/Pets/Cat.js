@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
 import ApiService from '../service'
+import {Link} from 'react-router-dom'
 
 export default class Cats extends Component {
     state = {
         cats: [],
-        catPos: 0,
-        loading: true,
-        adoptable: false
-    }
-
-    componentDidMount() {
-        ApiService.handleGetCats()
-            .then(cats => this.setState({ cats: cats, loading: false }))
+        catPos: 0
     }
 
     nextCat = () => {
@@ -32,56 +26,30 @@ export default class Cats extends Component {
             })
     }
 
-    setAutoAdopt = () => {
-        let counter = 0
-
-        setInterval(() => {
-            for (let i = 0; i < this.props.people.length; i++) {
-                if (this.props.people.length >= 3) {
-                    this.adoptCat()
-                    this.setState({
-                        adoptable: true
-                    })
-
-                    counter++
-                    console.log(counter)
-                }
-                if (counter === 3) {
-                    return this.setState({
-                        adoptable: true
-                    })
-                } else {
-                    counter = 0
-                }
-            }
-        }, 5000)
-    }
-
-    /*componentWillUnmount(){
-        const stopAutoAdopt = clearInterval(this.setAutoAdopt, 5000)
-        return stopAutoAdopt
-    }*/
-
     onClickEffect = () => {
         this.adoptCat()
         window.alert('Congrats! You adopted a Cat!')
+        return <Link to="/"></Link> 
     }
 
     render() {
-        if (this.state.loading) return ('loading')
-
-        const cats = this.state.cats
+        const cats = this.props.cats
         const { catPos } = this.state
-        const adoptable = this.state.adoptable
-        const cat = cats[catPos]
-
         let isAvailable = false
-        if (cat.length <= 0 && adoptable === false) isAvailable = false
-        if (this.props.peoplePos === 0 && adoptable === true) isAvailable = true
+        let cat;
+        
+        console.log(this.state.cats)
+
+        if (cats.length > 0) {
+            cat = cats[catPos]
+
+            if (cat.length <= 0 && this.props.isAdoptable === false && this.props.people.length <= 0) isAvailable = false
+            if (this.props.isAdoptable === true) isAvailable = true
+        }
 
         return (
-            <div>
-                {this.setAutoAdopt}
+            <>
+                {cats.length > 0 && <div>
                 <img src={cat.imageURL} alt="photograph" />
                 <h3>{cat.name}</h3>
                 <ul>
@@ -96,9 +64,9 @@ export default class Cats extends Component {
                 <button onClick={this.onClickEffect} disabled={isAvailable ? false : true}>Adopt</button><br />
                 <button onClick={this.previousCat} hidden={!catPos}>Previous Cat</button>
                 <button onClick={this.nextCat} hidden={catPos === this.state.cats.length - 1}>Next Cat</button>
-            </div>
+                </div>}
+            </>
         )
     }
 }
-
 

@@ -8,8 +8,10 @@ class AdoptPage extends Component {
     state = {
         people: [],
         newName: '',
-        peoplePos: 0,
-        isAdoptable: false
+        isAdoptable: false,
+        adoptions: 1,
+        cats: [],
+        dogs: [],
     }
 
     componentDidMount() {
@@ -17,6 +19,44 @@ class AdoptPage extends Component {
             .then(people => this.setState({
                 people: people,
             }))
+        
+        ApiService.handleGetCats()
+            .then(cats => this.setState({
+                cats: cats,
+            }))    
+
+        ApiService.handleGetDogs()
+            .then(dogs => this.setState({
+                dogs: dogs,
+            }))        
+
+        this.interval = setInterval(() => {
+            if(this.state.adoptions % 2){
+                ApiService.handleCatAdopt()
+                this.setState({cats: [...this.state.cats.splice(1)]})
+            } else {
+                ApiService.handleDogAdopt()
+                this.setState({dogs: [...this.state.dogs.splice(1)]})
+            }
+            ApiService.handleAddPerson(`Anonymous ${this.state.adoptions}`)
+            this.setState({
+                people: [...this.state.people.splice(1), `Anonymous ${this.state.adoptions}`], 
+                adoptions: this.state.adoptions+1,
+            })
+            if(this.state.newName === this.state.people[0]) {
+                this.setState({
+                    isAdoptable: true
+                })
+            }
+        }, 5000)
+    }
+
+    componentDidUpdate() {
+        if(this.state.newName === this.state.people[0]) clearInterval(this.interval)
+    }
+    
+    componentWillUnmount(){
+        clearInterval(this.interval);
     }
 
     addPerson = (e) => {
@@ -26,6 +66,7 @@ class AdoptPage extends Component {
         ApiService.handleAddPerson(newName)
             .then(res => {
                 this.setState({
+                    newName: newName,
                     people: [...this.state.people, res]
                 })
             })
@@ -34,13 +75,16 @@ class AdoptPage extends Component {
     deletePerson = () => {
         const people = this.state.people
         people.shift()
-        this.setState({ people, peoplePos: null })
+        this.setState({ people })
         ApiService.handleDeletePerson()
     }
 
     render() {
         const people = this.state.people
-        const {peoplePos} = this.state
+
+        console.log("people: ", people)
+        console.log("isAdoptable: ", this.state.isAdoptable)
+        console.log("adoption: ", this.state.adoptions)
 
         return (
             <div>
@@ -55,12 +99,12 @@ class AdoptPage extends Component {
                 </form>
 
 
-                <People people={people} peoplePos={peoplePos} />
+                <People people={people} />
 
                 <h3>Pets Available for Adoption</h3>
-                <Dog people={people} peoplePos={peoplePos} deletePerson={this.deletePerson } />
+                <Dog dogs={this.state.dogs} isAdoptable={this.state.isAdoptable} deletePerson={this.deletePerson } />
                 <br />{' '}
-                <Cat people={people} peoplePos={peoplePos} deletePerson={this.deletePerson } />
+                <Cat cats={this.state.cats} isAdoptable={this.state.isAdoptable} deletePerson={this.deletePerson } />
 
             </div>
         )

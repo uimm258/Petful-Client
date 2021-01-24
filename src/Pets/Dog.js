@@ -4,14 +4,7 @@ import ApiService from '../service'
 export default class Dogs extends Component {
     state = {
         dogs: [],
-        dogPos: 0,
-        loading: true,
-        adoptable: false
-    }
-
-    componentDidMount() {
-        ApiService.handleGetDogs()
-            .then(dogs => this.setState({ dogs: dogs, loading: false }))
+        dogPos: 0
     }
 
     nextDog = () => {
@@ -38,19 +31,21 @@ export default class Dogs extends Component {
     }
 
     render() {
-        if (this.state.loading) return ('loading')
-
-        const dogs = this.state.dogs
+        const dogs = this.props.dogs
         const { dogPos } = this.state
-        const adoptable = this.state.adoptable
-        const dog = dogs[dogPos]
-
         let isAvailable = false
-        if (dog.length <= 0 && adoptable === false) isAvailable = false
-        if (this.props.peoplePos === 0 && adoptable === true) isAvailable = true
+        
+        let dog; 
+        
+        if(dogs.length > 0){
+            dog = dogs[dogPos]
 
+            if (dog.length <= 0 && this.props.isAdoptable === false && this.props.people.length <= 0) isAvailable = false
+            if (this.props.isAdoptable === true) isAvailable = true
+        }
         return (
-            <div>
+            <>
+                {dogs.length > 0 && <div>
                 <img src={dog.imageURL} alt='photograph' />
                 <h3>{dog.name}</h3>
                 <ul>
@@ -65,8 +60,8 @@ export default class Dogs extends Component {
                 <button onClick={this.onClickEffect} disabled={isAvailable ? false : true}>Adopt</button><br />
                 <button onClick={this.previousDog} hidden={!dogPos}>Previous Dog</button>
                 <button onClick={this.nextDog} hidden={dogPos === this.state.dogs.length - 1}>Next Dog</button>
-            </div>
+                </div>}
+            </>
         )
     }
 }
-
