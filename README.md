@@ -11,7 +11,8 @@
 * Server: Express and Node.Js
 
 ### User Stories
-Connects to an API to get pets up for adoption in a FIFO structure.
+As a pet lover, I want to visit the FIFO pet adoption site so that I can get more information about the adoption process.
+
 
 As a visitor/user:
 * I want to enter my name to join the waiting list 

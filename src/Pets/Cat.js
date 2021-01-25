@@ -43,6 +43,8 @@ export default class Cats extends Component {
 
             if (cat.length <= 0 && this.props.isAdoptable === false && this.props.people.length <= 0) isAvailable = false
             if (this.props.isAdoptable === true) isAvailable = true
+        } else {
+            return <h3>Sorry! No more cats available for adoption at this time.</h3>
         }
 
         return (
@@ -60,7 +62,7 @@ export default class Cats extends Component {
                 </ul>
 
                 <button onClick={this.onClickEffect} disabled={isAvailable ? false : true}>Adopt</button>
-                <button onClick={this.previousCat} hidden={!catPos}>Previous Cat</button>
+                <button onClick={this.previousCat} hidden={!catPos} disabled={isAvailable ? false : true}>Previous Cat</button>
                 <button onClick={this.nextCat} hidden={catPos === this.state.cats.length-1} disabled={catPos === cats.length-1}>Next Cat</button>
                 </div>}
             </>

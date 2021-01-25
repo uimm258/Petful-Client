@@ -43,6 +43,8 @@ export default class Dogs extends Component {
 
             if (dog.length <= 0 && this.props.isAdoptable === false && this.props.people.length <= 0) isAvailable = false
             if (this.props.isAdoptable === true) isAvailable = true
+        } else {
+            return <h3>Sorry! No more dogs available for adoption at this time.</h3>
         }
 
         return (
@@ -60,7 +62,7 @@ export default class Dogs extends Component {
                 </ul>
                 
                 <button onClick={this.onClickEffect} disabled={isAvailable ? false : true}>Adopt</button>
-                <button onClick={this.previousDog} hidden={!dogPos}>Previous Dog</button>
+                <button onClick={this.previousDog} hidden={!dogPos} disabled={isAvailable ? false : true}>Previous Dog</button>
                 <button onClick={this.nextDog} hidden={dogPos === this.state.dogs.length-1} disabled={dogPos === dogs.length-1}>Next Dog</button>
                 </div>}
             </>
