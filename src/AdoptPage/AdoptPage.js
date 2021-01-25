@@ -33,19 +33,22 @@ class AdoptPage extends Component {
 
         this.interval = setInterval(() => {
             if (this.state.people.length >= 5) {
-                if (this.state.adoptions % 2 && this.state.cats.length !== 0 && this.state.dogs.length !== 0) {
-                    ApiService.handleCatAdopt()
-                    this.setState({
-                        cats: [...this.state.cats.splice(1)],
-                        people: [...this.state.people.splice(1)]
-                    })
+                if (this.state.adoptions % 2) {
+                    if(this.state.cats.length > 0){
+                        ApiService.handleCatAdopt()
+                        this.setState({
+                            cats: [...this.state.cats.splice(1)],
+                            people: [...this.state.people.splice(1)]
+                        })
+                    }
                 } else {
-                    ApiService.handleDogAdopt()
-                    this.setState({
-                        dogs: [...this.state.dogs.splice(1)],
-                        people: [...this.state.people.splice(1)]
-
-                    })
+                    if(this.state.dogs.length > 0){
+                        ApiService.handleDogAdopt()
+                        this.setState({
+                            dogs: [...this.state.dogs.splice(1)],
+                            people: [...this.state.people.splice(1)]
+                        })
+                    }
                 }
             }
             ApiService.handleAddPerson(`Anonymous ${this.state.adoptions}`)
