@@ -33,7 +33,7 @@ class AdoptPage extends Component {
 
         this.interval = setInterval(() => {
             if (this.state.people.length >= 5) {
-                if (this.state.adoptions % 2) {
+                if (this.state.adoptions % 2 && this.state.cats.length !== 0 && this.state.dogs.length !== 0) {
                     ApiService.handleCatAdopt()
                     this.setState({
                         cats: [...this.state.cats.splice(1)],
@@ -62,7 +62,7 @@ class AdoptPage extends Component {
     }
 
     componentDidUpdate() {
-        if (this.state.newName === this.state.people[0]) clearInterval(this.interval)
+        if (this.state.newName === this.state.people[0] && this.state.dogs.length === 0 && this.state.cats.length === 0) clearInterval(this.interval)
     }
 
     componentWillUnmount() {
