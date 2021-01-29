@@ -65,7 +65,7 @@ class AdoptPage extends Component {
     }
 
     componentDidUpdate() {
-        if (this.state.newName === this.state.people[0] && this.state.dogs.length === 0 && this.state.cats.length === 0) clearInterval(this.interval)
+        if (this.state.newName === this.state.people[0]) clearInterval(this.interval)
     }
 
     componentWillUnmount() {

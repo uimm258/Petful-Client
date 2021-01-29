@@ -63,7 +63,7 @@ export default class Cats extends Component {
 
                 <button onClick={this.onClickEffect} disabled={isAvailable ? false : true}>Adopt</button>
                 <button onClick={this.previousCat} hidden={!catPos} disabled={isAvailable ? false : true}>Previous Cat</button>
-                <button onClick={this.nextCat} hidden={catPos === this.state.cats.length-1} disabled={catPos === cats.length-1}>Next Cat</button>
+                <button onClick={this.nextCat} hidden={catPos === this.state.cats.length-1} disabled={(catPos === cats.length-1) || (isAvailable ? false : true)}>Next Cat</button>
                 </div>}
             </>
         )

@@ -62,8 +62,8 @@ export default class Dogs extends Component {
                 </ul>
                 
                 <button onClick={this.onClickEffect} disabled={isAvailable ? false : true}>Adopt</button>
-                <button onClick={this.previousDog} hidden={!dogPos} disabled={isAvailable ? false : true}>Previous Dog</button>
-                <button onClick={this.nextDog} hidden={dogPos === this.state.dogs.length-1} disabled={dogPos === dogs.length-1}>Next Dog</button>
+                <button onClick={this.previousDog} hidden={!dogPos}>Previous Dog</button>
+                <button onClick={this.nextDog} hidden={dogPos === this.state.dogs.length-1} disabled={(dogPos === dogs.length-1) || (isAvailable ? false : true)}>Next Dog</button>
                 </div>}
             </>
         )
